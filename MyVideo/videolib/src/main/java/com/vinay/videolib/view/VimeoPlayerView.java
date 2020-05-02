@@ -19,22 +19,22 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
 import com.vinay.videolib.R;
-import com.vinay.videolib.listeners.VimeoPlayerErrorListener;
-import com.vinay.videolib.listeners.VimeoPlayerReadyListener;
-import com.vinay.videolib.listeners.VimeoPlayerStateListener;
-import com.vinay.videolib.listeners.VimeoPlayerTextTrackListener;
-import com.vinay.videolib.listeners.VimeoPlayerTimeListener;
-import com.vinay.videolib.listeners.VimeoPlayerVolumeListener;
+import com.vinay.videolib.listeners.PlayerErrorListener;
+import com.vinay.videolib.listeners.PlayerReadyListener;
+import com.vinay.videolib.listeners.PlayerStateListener;
+import com.vinay.videolib.listeners.PlayerTextTrackListener;
+import com.vinay.videolib.listeners.PlayerTimeListener;
+import com.vinay.videolib.listeners.PlayerVolumeListener;
 import com.vinay.videolib.model.PlayerState;
 import com.vinay.videolib.model.TextTrack;
-import com.vinay.videolib.model.VimeoOptions;
+import com.vinay.videolib.model.MyVideoOptions;
 import com.vinay.videolib.utils.JsBridge;
 import com.vinay.videolib.utils.Utils;
 import com.vinay.videolib.view.menu.ViemoMenuItem;
 
 
 public class VimeoPlayerView extends FrameLayout implements LifecycleObserver {
-    public VimeoOptions defaultOptions;
+    public MyVideoOptions defaultOptions;
     public int defaultColor = Color.rgb(0, 172, 240);
     public float defaultAspectRatio = 16f / 9;
     private JsBridge jsBridge;
@@ -61,7 +61,7 @@ public class VimeoPlayerView extends FrameLayout implements LifecycleObserver {
         super(context, attrs, defStyleAttr);
 
         this.jsBridge = new JsBridge();
-        jsBridge.addReadyListener(new VimeoPlayerReadyListener() {
+        jsBridge.addReadyListener(new PlayerReadyListener() {
             @Override
             public void onReady(String t, float duration, TextTrack[] textTrackArray) {
                 title = t;
@@ -115,27 +115,27 @@ public class VimeoPlayerView extends FrameLayout implements LifecycleObserver {
         }
     }
 
-    public void addReadyListener(VimeoPlayerReadyListener readyListener) {
+    public void addReadyListener(PlayerReadyListener readyListener) {
         jsBridge.addReadyListener(readyListener);
     }
 
-    public void addStateListener(VimeoPlayerStateListener stateListener) {
+    public void addStateListener(PlayerStateListener stateListener) {
         jsBridge.addStateListener(stateListener);
     }
 
-    public void addTextTrackListener(VimeoPlayerTextTrackListener textTrackListener) {
+    public void addTextTrackListener(PlayerTextTrackListener textTrackListener) {
         jsBridge.addTextTrackListener(textTrackListener);
     }
 
-    public void addTimeListener(VimeoPlayerTimeListener timeListener) {
+    public void addTimeListener(PlayerTimeListener timeListener) {
         jsBridge.addTimeListener(timeListener);
     }
 
-    public void addVolumeListener(VimeoPlayerVolumeListener volumeListener) {
+    public void addVolumeListener(PlayerVolumeListener volumeListener) {
         jsBridge.addVolumeListener(volumeListener);
     }
 
-    public void addErrorListener(VimeoPlayerErrorListener errorListener) {
+    public void addErrorListener(PlayerErrorListener errorListener) {
         jsBridge.addErrorListener(errorListener);
     }
 
@@ -330,8 +330,8 @@ public class VimeoPlayerView extends FrameLayout implements LifecycleObserver {
         vimeoPlayer.pause();
     }
 
-    private VimeoOptions generateDefaultVimeoOptions(Context context, AttributeSet attrs) {
-        VimeoOptions options = new VimeoOptions();
+    private MyVideoOptions generateDefaultVimeoOptions(Context context, AttributeSet attrs) {
+        MyVideoOptions options = new MyVideoOptions();
 
         if (!isInEditMode()) {
             TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.VimeoPlayerView);

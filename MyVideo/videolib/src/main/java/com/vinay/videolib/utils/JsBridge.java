@@ -5,12 +5,12 @@ import android.os.Looper;
 import android.webkit.JavascriptInterface;
 
 import com.google.gson.Gson;
-import com.vinay.videolib.listeners.VimeoPlayerErrorListener;
-import com.vinay.videolib.listeners.VimeoPlayerReadyListener;
-import com.vinay.videolib.listeners.VimeoPlayerStateListener;
-import com.vinay.videolib.listeners.VimeoPlayerTextTrackListener;
-import com.vinay.videolib.listeners.VimeoPlayerTimeListener;
-import com.vinay.videolib.listeners.VimeoPlayerVolumeListener;
+import com.vinay.videolib.listeners.PlayerErrorListener;
+import com.vinay.videolib.listeners.PlayerReadyListener;
+import com.vinay.videolib.listeners.PlayerStateListener;
+import com.vinay.videolib.listeners.PlayerTextTrackListener;
+import com.vinay.videolib.listeners.PlayerTimeListener;
+import com.vinay.videolib.listeners.PlayerVolumeListener;
 import com.vinay.videolib.model.PlayerState;
 import com.vinay.videolib.model.TextTrack;
 
@@ -19,12 +19,12 @@ import java.util.ArrayList;
 
 public class JsBridge {
     private final Handler mainThreadHandler;
-    private ArrayList<VimeoPlayerReadyListener> readyListeners;
-    private ArrayList<VimeoPlayerStateListener> stateListeners;
-    private ArrayList<VimeoPlayerTextTrackListener> textTrackListeners;
-    private ArrayList<VimeoPlayerTimeListener> timeListeners;
-    private ArrayList<VimeoPlayerVolumeListener> volumeListeners;
-    private ArrayList<VimeoPlayerErrorListener> errorListeners;
+    private ArrayList<PlayerReadyListener> readyListeners;
+    private ArrayList<PlayerStateListener> stateListeners;
+    private ArrayList<PlayerTextTrackListener> textTrackListeners;
+    private ArrayList<PlayerTimeListener> timeListeners;
+    private ArrayList<PlayerVolumeListener> volumeListeners;
+    private ArrayList<PlayerErrorListener> errorListeners;
 
 
     public float currentTimeSeconds = 0;
@@ -41,31 +41,31 @@ public class JsBridge {
         this.mainThreadHandler = new Handler(Looper.getMainLooper());
     }
 
-    public void removeLastReadyListener(VimeoPlayerReadyListener readyListener) {
+    public void removeLastReadyListener(PlayerReadyListener readyListener) {
         this.readyListeners.remove(readyListener);
     }
 
-    public void addReadyListener(VimeoPlayerReadyListener readyListener) {
+    public void addReadyListener(PlayerReadyListener readyListener) {
         this.readyListeners.add(readyListener);
     }
 
-    public void addStateListener(VimeoPlayerStateListener stateListener) {
+    public void addStateListener(PlayerStateListener stateListener) {
         this.stateListeners.add(stateListener);
     }
 
-    public void addTextTrackListener(VimeoPlayerTextTrackListener textTrackListener) {
+    public void addTextTrackListener(PlayerTextTrackListener textTrackListener) {
         this.textTrackListeners.add(textTrackListener);
     }
 
-    public void addTimeListener(VimeoPlayerTimeListener timeListener) {
+    public void addTimeListener(PlayerTimeListener timeListener) {
         this.timeListeners.add(timeListener);
     }
 
-    public void addVolumeListener(VimeoPlayerVolumeListener volumeListener) {
+    public void addVolumeListener(PlayerVolumeListener volumeListener) {
         this.volumeListeners.add(volumeListener);
     }
 
-    public void addErrorListener(VimeoPlayerErrorListener errorListener) {
+    public void addErrorListener(PlayerErrorListener errorListener) {
         this.errorListeners.add(errorListener);
     }
 
@@ -73,7 +73,7 @@ public class JsBridge {
     @JavascriptInterface
     public void sendVideoCurrentTime(float seconds) {
         currentTimeSeconds = seconds;
-        for (final VimeoPlayerTimeListener timeListener : timeListeners) {
+        for (final PlayerTimeListener timeListener : timeListeners) {
             mainThreadHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -85,7 +85,7 @@ public class JsBridge {
 
     @JavascriptInterface
     public void sendError(final String message, final String method, final String name) {
-        for (final VimeoPlayerErrorListener errorListener : errorListeners) {
+        for (final PlayerErrorListener errorListener : errorListeners) {
             mainThreadHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -100,7 +100,7 @@ public class JsBridge {
     public void sendReady(final String title, final float duration, final String tracksJson) {
         this.playerState = PlayerState.READY;
         final TextTrack[] textTrackArray = new Gson().fromJson(tracksJson, TextTrack[].class);
-        for (final VimeoPlayerReadyListener readyListener : readyListeners) {
+        for (final PlayerReadyListener readyListener : readyListeners) {
             mainThreadHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -112,7 +112,7 @@ public class JsBridge {
 
     @JavascriptInterface
     public void sendInitFailed() {
-        for (final VimeoPlayerReadyListener readyListener : readyListeners) {
+        for (final PlayerReadyListener readyListener : readyListeners) {
             mainThreadHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -126,7 +126,7 @@ public class JsBridge {
     @JavascriptInterface
     public void sendPlaying(final float duration) {
         playerState = PlayerState.PLAYING;
-        for (final VimeoPlayerStateListener stateListener : stateListeners) {
+        for (final PlayerStateListener stateListener : stateListeners) {
             mainThreadHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -140,7 +140,7 @@ public class JsBridge {
     @JavascriptInterface
     public void sendPaused(final float seconds) {
         playerState = PlayerState.PAUSED;
-        for (final VimeoPlayerStateListener stateListener : stateListeners) {
+        for (final PlayerStateListener stateListener : stateListeners) {
             mainThreadHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -153,7 +153,7 @@ public class JsBridge {
     @JavascriptInterface
     public void sendEnded(final float duration) {
         playerState = PlayerState.ENDED;
-        for (final VimeoPlayerStateListener stateListener : stateListeners) {
+        for (final PlayerStateListener stateListener : stateListeners) {
             mainThreadHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -167,7 +167,7 @@ public class JsBridge {
     @JavascriptInterface
     public void sendVolumeChange(final float volume) {
         this.volume = volume;
-        for (final VimeoPlayerVolumeListener volumeListener : volumeListeners) {
+        for (final PlayerVolumeListener volumeListener : volumeListeners) {
             mainThreadHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -179,7 +179,7 @@ public class JsBridge {
 
     @JavascriptInterface
     public void sendTextTrackChange(final String kind, final String label, final String language) {
-        for (final VimeoPlayerTextTrackListener textTrackListener : textTrackListeners) {
+        for (final PlayerTextTrackListener textTrackListener : textTrackListeners) {
             mainThreadHandler.post(new Runnable() {
                 @Override
                 public void run() {

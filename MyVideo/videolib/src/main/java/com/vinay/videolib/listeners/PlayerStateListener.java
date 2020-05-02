@@ -1,6 +1,6 @@
 package com.vinay.videolib.listeners;
 
-public interface VimeoPlayerStateListener {
+public interface PlayerStateListener {
     void onPlaying(float duration);
 
     void onPaused(float seconds);

@@ -1,5 +1,5 @@
 package com.vinay.videolib.listeners;
 
-public interface VimeoPlayerErrorListener {
+public interface PlayerErrorListener {
     void onError(String message, String method, String name);
 }

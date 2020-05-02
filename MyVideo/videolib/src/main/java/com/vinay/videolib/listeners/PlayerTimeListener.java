@@ -1,5 +1,5 @@
 package com.vinay.videolib.listeners;
 
-public interface VimeoPlayerTimeListener {
+public interface PlayerTimeListener {
     void onCurrentSecond(float second);
 }

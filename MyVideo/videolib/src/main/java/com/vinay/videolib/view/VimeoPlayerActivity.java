@@ -13,8 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.vinay.videolib.R;
-import com.vinay.videolib.listeners.VimeoPlayerReadyListener;
-import com.vinay.videolib.listeners.VimeoPlayerTimeListener;
+import com.vinay.videolib.listeners.PlayerReadyListener;
+import com.vinay.videolib.listeners.PlayerTimeListener;
 import com.vinay.videolib.model.TextTrack;
 
 
@@ -87,7 +87,7 @@ public class VimeoPlayerActivity extends AppCompatActivity {
         vimeoPlayerView.setLoop(loop);
         vimeoPlayerView.setTopicColor(topicColor);
         vimeoPlayerView.initialize(true, videoId, hashKey, baseUrl);
-        vimeoPlayerView.addReadyListener(new VimeoPlayerReadyListener() {
+        vimeoPlayerView.addReadyListener(new PlayerReadyListener() {
             @Override
             public void onReady(String title, float duration, TextTrack[] textTrackArray) {
                 vimeoPlayerView.seekTo(startAt);
@@ -99,7 +99,7 @@ public class VimeoPlayerActivity extends AppCompatActivity {
 
             }
         });
-        vimeoPlayerView.addTimeListener(new VimeoPlayerTimeListener() {
+        vimeoPlayerView.addTimeListener(new PlayerTimeListener() {
             @Override
             public void onCurrentSecond(float second) {
                 if (second >= endAt) {

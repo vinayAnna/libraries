@@ -19,11 +19,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.vinay.videolib.R;
-import com.vinay.videolib.listeners.VimeoPlayerReadyListener;
-import com.vinay.videolib.listeners.VimeoPlayerStateListener;
-import com.vinay.videolib.listeners.VimeoPlayerTimeListener;
+import com.vinay.videolib.listeners.PlayerReadyListener;
+import com.vinay.videolib.listeners.PlayerStateListener;
+import com.vinay.videolib.listeners.PlayerTimeListener;
 import com.vinay.videolib.model.TextTrack;
-import com.vinay.videolib.model.VimeoThumbnail;
+import com.vinay.videolib.model.MyVideoThumbnail;
 import com.vinay.videolib.utils.Utils;
 import com.vinay.videolib.view.menu.ViemoMenuItem;
 import com.vinay.videolib.view.menu.ViemoPlayerMenu;
@@ -92,7 +92,7 @@ public class DefaultControlPanelView {
         });
 
 
-        vimeoPlayerView.addTimeListener(new VimeoPlayerTimeListener() {
+        vimeoPlayerView.addTimeListener(new PlayerTimeListener() {
             @Override
             public void onCurrentSecond(float second) {
                 vimeoCurrentTimeTextView.setText(Utils.formatTime(second));
@@ -100,7 +100,7 @@ public class DefaultControlPanelView {
             }
         });
 
-        vimeoPlayerView.addReadyListener(new VimeoPlayerReadyListener() {
+        vimeoPlayerView.addReadyListener(new PlayerReadyListener() {
             @Override
             public void onReady(String title, float duration, TextTrack[] textTrackArray) {
                 vimeoSeekBar.setMax((int) duration);
@@ -116,7 +116,7 @@ public class DefaultControlPanelView {
             }
         });
 
-        vimeoPlayerView.addStateListener(new VimeoPlayerStateListener() {
+        vimeoPlayerView.addStateListener(new PlayerStateListener() {
             @Override
             public void onPlaying(float duration) {
                 ended = false;
@@ -259,16 +259,16 @@ public class DefaultControlPanelView {
 
     @SuppressLint("StaticFieldLeak")
     protected void fetchThumbnail(final Context context, final int videoId) {
-        new AsyncTask<Void, Void, VimeoThumbnail>() {
+        new AsyncTask<Void, Void, MyVideoThumbnail>() {
             @Override
-            protected VimeoThumbnail doInBackground(Void... voids) {
+            protected MyVideoThumbnail doInBackground(Void... voids) {
                 String url = "https://vimeo.com/api/oembed.json?url=https://player.vimeo.com/video/" + videoId;
                 OkHttpClient client = new OkHttpClient();
                 Request request = new Request.Builder().url(url).build();
-                VimeoThumbnail vimeoThumbnail = null;
+                MyVideoThumbnail vimeoThumbnail = null;
                 try {
                     Response response = client.newCall(request).execute();
-                    vimeoThumbnail = new Gson().fromJson(response.body().string(), VimeoThumbnail.class);
+                    vimeoThumbnail = new Gson().fromJson(response.body().string(), MyVideoThumbnail.class);
                 } catch (Exception e) {
                     Log.e(context.getPackageName(), e.toString());
                 }
@@ -276,7 +276,7 @@ public class DefaultControlPanelView {
             }
 
             @Override
-            protected void onPostExecute(VimeoThumbnail vimeoThumbnail) {
+            protected void onPostExecute(MyVideoThumbnail vimeoThumbnail) {
                 super.onPostExecute(vimeoThumbnail);
                 if (vimeoThumbnail != null && vimeoThumbnail.thumbnailUrl != null) {
                     RequestOptions options = new RequestOptions()

@@ -2,7 +2,7 @@ package com.vinay.videolib.model;
 
 import android.graphics.Color;
 
-public class VimeoOptions {
+public class MyVideoOptions {
     public boolean autoPlay = false;
     public boolean loop = false;
     public boolean muted = false;

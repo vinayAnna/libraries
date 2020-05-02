@@ -4,8 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.vinay.videolib.listeners.VimeoPlayerErrorListener;
-import com.vinay.videolib.listeners.VimeoPlayerTimeListener;
+import com.vinay.videolib.listeners.PlayerErrorListener;
+import com.vinay.videolib.listeners.PlayerTimeListener;
 import com.vinay.videolib.view.VimeoPlayerView;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,14 +21,14 @@ public class MainActivity extends AppCompatActivity {
 
         vimeoPlayerView.initialize(true, 59777392);
 
-        vimeoPlayerView.addTimeListener(new VimeoPlayerTimeListener() {
+        vimeoPlayerView.addTimeListener(new PlayerTimeListener() {
             @Override
             public void onCurrentSecond(float second) {
 
             }
         });
 
-        vimeoPlayerView.addErrorListener(new VimeoPlayerErrorListener() {
+        vimeoPlayerView.addErrorListener(new PlayerErrorListener() {
             @Override
             public void onError(String message, String method, String name) {
 

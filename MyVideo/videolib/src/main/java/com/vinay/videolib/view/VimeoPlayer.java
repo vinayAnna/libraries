@@ -12,10 +12,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.vinay.videolib.R;
-import com.vinay.videolib.listeners.VimeoPlayerReadyListener;
+import com.vinay.videolib.listeners.PlayerReadyListener;
 import com.vinay.videolib.model.PlayerState;
 import com.vinay.videolib.model.TextTrack;
-import com.vinay.videolib.model.VimeoOptions;
+import com.vinay.videolib.model.MyVideoOptions;
 import com.vinay.videolib.utils.JsBridge;
 import com.vinay.videolib.utils.Utils;
 
@@ -28,9 +28,9 @@ public class VimeoPlayer extends WebView {
     private String hashKey;
     private String baseUrl;
     private JsBridge jsBridge;
-    private VimeoOptions vimeoOptions;
+    private MyVideoOptions vimeoOptions;
     private boolean enabledCache;
-    private VimeoPlayerReadyListener resetReadyListener;
+    private PlayerReadyListener resetReadyListener;
 
     public VimeoPlayer(Context context) {
         this(context, null);
@@ -183,7 +183,7 @@ public class VimeoPlayer extends WebView {
 
 
     @SuppressLint("SetJavaScriptEnabled")
-    private void initWebView(boolean enabledCache, JsBridge jsBridge, VimeoOptions vimeoOptions, int videoId, String hashKey, String baseUrl) {
+    private void initWebView(boolean enabledCache, JsBridge jsBridge, MyVideoOptions vimeoOptions, int videoId, String hashKey, String baseUrl) {
         this.getSettings().setJavaScriptEnabled(true);
         this.getSettings().setSupportMultipleWindows(false);
         this.getSettings().setMediaPlaybackRequiresUserGesture(false);
@@ -292,7 +292,7 @@ public class VimeoPlayer extends WebView {
         if (resetReadyListener != null) {
             jsBridge.removeLastReadyListener(resetReadyListener);
         }
-        resetReadyListener = new VimeoPlayerReadyListener() {
+        resetReadyListener = new PlayerReadyListener() {
             @Override
             public void onReady(String title, float duration, TextTrack[] textTrackArray) {
                 seekTo(playAt);
@@ -308,7 +308,7 @@ public class VimeoPlayer extends WebView {
         initWebView(enabledCache, jsBridge, vimeoOptions, videoId, hashKey, baseUrl);
     }
 
-    protected void initialize(boolean enabledCache, JsBridge jsBridge, VimeoOptions vimeoOptions, int videoId, String hashKey, String baseUrl) {
+    protected void initialize(boolean enabledCache, JsBridge jsBridge, MyVideoOptions vimeoOptions, int videoId, String hashKey, String baseUrl) {
         this.jsBridge = jsBridge;
         this.vimeoOptions = vimeoOptions;
         this.videoId = videoId;
